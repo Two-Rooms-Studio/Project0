@@ -12,16 +12,13 @@ public class PlayerMovement : MonoBehaviour {
 	[Range(0.5f, 5.0f)]
 	[Tooltip("The sprint speed of the player, value is added to player walking speed")]
 	public float playerSprintSpeed;
-
-	[Range(50.0f, 300.0f)]
-	[Tooltip("The energy bar of the player, for every 20 points of energy we have one second of running")]
-	public float playerEnergyValue;
 	//
 
 	//private vars
 	private Rigidbody2D rb; //players rigidbody
 	private float leftRight;
 	private float upDown;
+	public float playerEnergyValue = player.getEnergy();
 	//
 
 
@@ -34,14 +31,18 @@ public class PlayerMovement : MonoBehaviour {
 		leftRight = Input.GetAxisRaw ("Horizontal");
 		upDown = Input.GetAxisRaw ("Vertical");
 		Vector2 movement = new Vector2 (leftRight, upDown);
+		playerEnergyValue = player.getEnergy ();
 
 		rb.velocity = Vector2.zero;
-		if ((Input.GetKey (KeyCode.LeftShift)) && playerEnergyValue > 0) {
+		//Move the actual sprinting mechanic inside of playerStats and simply check for the LeftShift here, have sprinting return a bool to know which movement to use
+		if ((Input.GetKey (KeyCode.LeftShift)) && playerEnergyValue > 0.4f) { // since we remove .4 energy each time
+			player.isDrainingEnergy();
 			movement = movement * (playerSpeed + playerSprintSpeed);
 			playerEnergyValue = playerEnergyValue - 0.4f; //at this value every 20 points of energy equals one second of running
-
+			player.setEnergy(playerEnergyValue);
 		} 
 		else {
+			player.isNotDrainingEnergy();
 			movement = movement * playerSpeed;
 		}
 		rb.AddForce ((movement), ForceMode2D.Impulse); //implement our movement
