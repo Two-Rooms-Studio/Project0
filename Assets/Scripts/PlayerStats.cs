@@ -11,6 +11,7 @@ public static class player{
 	static float energy = 100;
 	static float energyCap = 100;
 	static float mana;
+	static float energyRechargeValue = 0.4f;
 	static bool DrainingEnergy = false;
 
 	public static void setName(string p_name){
@@ -24,6 +25,10 @@ public static class player{
 
 	public static void setEnergy(float p_energy){
 		energy = p_energy;
+	}
+
+	public static void setEnergyRechargeValue(float p_energyRechargeValue){
+		energyRechargeValue = p_energyRechargeValue;
 	}
 
 	public static string getClassName(){
@@ -51,10 +56,10 @@ public static class player{
 	}
 
 	public static void RegenerateEnergy(){
-		if ((DrainingEnergy == false) && ((energy + .04f) < energyCap)) { //use .04f since we regenerate .04f energy per tick
-			energy = energy + .04f;
+		if ((DrainingEnergy == false) && ((energy + energyRechargeValue) < energyCap)) { //use .04f since we regenerate .04f energy per tick
+			energy = energy + energyRechargeValue;
 		} 
-		else if ((DrainingEnergy == false) && ((energy + .04f) > energyCap)) {
+		else if ((DrainingEnergy == false) && ((energy + energyRechargeValue) > energyCap)) {
 			energy = energyCap;
 		}
 	}

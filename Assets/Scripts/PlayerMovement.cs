@@ -35,7 +35,7 @@ public class PlayerMovement : MonoBehaviour {
 
 		rb.velocity = Vector2.zero;
 		//Move the actual sprinting mechanic inside of playerStats and simply check for the LeftShift here, have sprinting return a bool to know which movement to use
-		if ((Input.GetKey (KeyCode.LeftShift)) && playerEnergyValue > 0.4f) { // since we remove .4 energy each time
+		if ((Input.GetKey (KeyCode.LeftShift)) && (player.getEnergy() >= 0.4f)) { // since we remove .4 energy each time
 			player.isDrainingEnergy();
 			movement = movement * (playerSpeed + playerSprintSpeed);
 			playerEnergyValue = playerEnergyValue - 0.4f; //at this value every 20 points of energy equals one second of running
